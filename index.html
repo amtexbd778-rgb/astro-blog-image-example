@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOMELAND LOGISTICS SMART ERP</title>
+<style>
+:root{--navy:#10233f;--blue:#1769aa;--bg:#f2f5f9;--card:#fff;--text:#182536;--muted:#64748b;--green:#16834a}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(120deg,#10233f,#1769aa);color:white;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header h1{font-size:clamp(18px,3vw,26px);margin:0}header p{margin:5px 0 0;color:#dbeafe;font-size:13px}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}button,.btn{border:0;border-radius:9px;padding:10px 13px;background:var(--blue);color:white;font-weight:600;cursor:pointer}button.secondary{background:#e8eef6;color:#17324f}button.danger{background:#b42318}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 90px)}nav{background:var(--navy);padding:14px;display:flex;flex-direction:column;gap:6px}nav button{background:transparent;color:#d9e7f7;text-align:left;padding:12px}nav button.active,nav button:hover{background:#24476e;color:white}
+main{padding:22px;max-width:1400px;width:100%;margin:auto}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h2{margin:0 0 15px;font-size:22px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.metric,.panel{background:var(--card);border:1px solid #e3eaf2;border-radius:14px;padding:17px;box-shadow:0 2px 8px #10233f08}.metric small{color:var(--muted)}.metric strong{display:block;font-size:26px;margin-top:6px}.metric span{font-size:12px;color:var(--muted)}
+.panel{margin-top:16px}.formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}input,select,textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:white;color:var(--text)}.form-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;margin-top:12px;min-width:650px}th,td{padding:10px;border-bottom:1px solid #e5eaf0;text-align:left;font-size:13px}th{background:#f7f9fc;color:#42536a}.tablewrap{overflow:auto}.empty{color:var(--muted);padding:20px;text-align:center}.notice{background:#fff8e6;color:#7a4b00;padding:12px;border-radius:10px;margin:0 0 14px;font-size:13px}
+.hidden{display:none}.pill{display:inline-block;border-radius:99px;padding:4px 8px;background:#e8f5ed;color:#166534;font-size:12px}
+footer{text-align:center;color:var(--muted);padding:18px;font-size:12px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}nav button{text-align:center;padding:9px 5px;font-size:12px}main{padding:14px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.formgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){header{padding:15px}.grid,.formgrid{grid-template-columns:1fr}.metric strong{font-size:23px}}
+</style>
+</head>
+<body>
+<header><div><h1>HOMELAND LOGISTICS</h1><p>SMART ERP MANAGEMENT SYSTEM · Moving the world. Moving your business.</p></div>
+<div class="top-actions"><button class="secondary" onclick="window.print()">Print / PDF</button><button onclick="exportData()">Export Data</button></div></header>
+<div class="layout">
+<nav id="nav">
+<button class="active" data-page="Dashboard">▦ Dashboard</button><button data-page="Customers">♙ Customers</button><button data-page="Employees">♙ Employees</button><button data-page="Vehicles">▣ Vehicles</button><button data-page="Deliveries">⇢ Deliveries</button><button data-page="Finance">৳ Finance</button><button data-page="Inventory">▤ Inventory</button><button data-page="Reports">▥ Reports</button><button data-page="Settings">⚙ Settings</button>
+</nav>
+<main>
+<div class="notice"><b>Setup status:</b> Combined responsive ERP interface ready. Entries currently save in this browser only. To sync online between devices, connect the Supabase project using the setup guide and SQL included in the ZIP.</div>
+<section id="Dashboard" class="page">
+<div class="section-title"><h2>Company Dashboard</h2><span class="pill">Responsive · Mobile & Desktop</span></div>
+<div class="grid" id="metrics"></div>
+<div class="panel"><h3>Quick Overview</h3><p>Use the navigation to manage customers, employees, vehicles, delivery entries, finance, inventory and reports.</p><div id="chart" style="height:12px;background:#e5edf6;border-radius:9px;overflow:hidden"><div style="height:100%;width:0;background:var(--green)" id="chartbar"></div></div><small id="chartlabel">Income / expense visual summary</small></div>
+</section>
+<section id="Customers" class="page hidden"></section><section id="Employees" class="page hidden"></section><section id="Vehicles" class="page hidden"></section><section id="Deliveries" class="page hidden"></section><section id="Finance" class="page hidden"></section><section id="Inventory" class="page hidden"></section>
+<section id="Reports" class="page hidden"><h2>Reports</h2><div class="panel"><p>Download all stored records as JSON or print this page as PDF.</p><button onclick="exportData()">Download Backup</button><button class="secondary" onclick="window.print()">Print Report</button></div></section>
+<section id="Settings" class="page hidden"><h2>Settings</h2><div class="panel"><h3>Company details</h3><div class="formgrid"><div><label>Company name</label><input id="companyName" value="HOMELAND LOGISTICS SERVICE COMPANY"></div><div><label>Currency</label><select id="currency"><option>SAR</option><option>BDT</option><option>USD</option></select></div><div><label>Company email</label><input value="amtexbd778@gmail.com" id="companyEmail"></div></div><div class="form-actions"><button onclick="saveSettings()">Save Settings</button><button class="danger" onclick="resetAll()">Clear browser data</button></div></div></section>
+</main></div><footer>© 2026 HOMELAND LOGISTICS SERVICE COMPANY · Combined ERP Starter</footer>
+<script>
+const entities={
+Customers:["Customer ID","Customer Name","Phone","Email","Address"],
+Employees:["Employee ID","Full Name","Role","Phone","Salary (SAR)"],
+Vehicles:["Vehicle ID","Plate Number","Vehicle Type","Driver","Status"],
+Deliveries:["Delivery ID","Date","Customer","Driver","Destination","Status","Amount (SAR)"],
+Finance:["Entry ID","Date","Type","Category","Description","Amount (SAR)"],
+Inventory:["Item ID","Item Name","Category","Quantity","Unit","Unit Cost (SAR)"]
+};
+let records=JSON.parse(localStorage.getItem("homelandERP_records")||"{}");
+let settings=JSON.parse(localStorage.getItem("homelandERP_settings")||'{"companyName":"HOMELAND LOGISTICS SERVICE COMPANY","currency":"SAR","companyEmail":"amtexbd778@gmail.com"}');
+function persist(){localStorage.setItem("homelandERP_records",JSON.stringify(records));}
+function renderEntity(page){
+const fields=entities[page];let sec=document.getElementById(page);
+sec.innerHTML=`<div class="section-title"><h2>${page} Management</h2><button onclick="window.print()">Print</button></div><div class="panel"><form id="form-${page}"><div class="formgrid">${fields.map((f,i)=>`<div><label>${f}</label><input name="f${i}" ${i===0?'required':''} placeholder="Enter ${f}" ${f==="Date"?'type="date"':''} ${f.includes("Amount")||f.includes("Salary")||f==="Quantity"||f==="Unit Cost (SAR)"?'type="number" step="0.01"':''}></div>`).join("")}</div><div class="form-actions"><button type="submit">Save Entry</button><button type="reset" class="secondary">Clear Form</button></div></form></div><div class="panel"><div class="section-title"><h3>Records</h3><input style="max-width:260px" placeholder="Search records..." oninput="filterTable('${page}',this.value)"></div><div class="tablewrap"><table><thead><tr>${fields.map(f=>`<th>${f}</th>`).join("")}<th>Actions</th></tr></thead><tbody id="tbody-${page}"></tbody></table></div></div>`;
+document.getElementById(`form-${page}`).onsubmit=e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target));(records[page]??=[]).push(data);persist();e.target.reset();drawRows(page);updateDashboard();};
+drawRows(page);
+}
+function drawRows(page,search=""){let tb=document.getElementById("tbody-"+page);if(!tb)return;let arr=records[page]||[];arr=arr.filter(r=>Object.values(r).join(" ").toLowerCase().includes(search.toLowerCase()));tb.innerHTML=arr.length?arr.map((r,idx)=>`<tr>${entities[page].map((f,i)=>`<td>${escapeHtml(r["f"+i]||"")}</td>`).join("")}<td><button class="danger" style="padding:5px 8px" onclick="delRow('${page}',${(records[page]||[]).indexOf(r)})">Delete</button></td></tr>`).join(""):`<tr><td colspan="${entities[page].length+1}" class="empty">No records yet</td></tr>`}
+function filterTable(p,q){drawRows(p,q)}
+function delRow(p,i){if(confirm("Delete this record?")){records[p].splice(i,1);persist();drawRows(p);updateDashboard()}}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function updateDashboard(){let count=p=> (records[p]||[]).length;let inc=(records.Finance||[]).filter(r=>r.f2==="Income").reduce((s,r)=>s+Number(r.f5||0),0);let exp=(records.Finance||[]).filter(r=>r.f2==="Expense").reduce((s,r)=>s+Number(r.f5||0),0);let delamt=(records.Deliveries||[]).reduce((s,r)=>s+Number(r.f6||0),0);
+document.getElementById("metrics").innerHTML=[["Customers",count("Customers")],["Employees",count("Employees")],["Vehicles",count("Vehicles")],["Deliveries",count("Deliveries")],["Total Income",inc.toFixed(2)+" "+settings.currency],["Total Expense",exp.toFixed(2)+" "+settings.currency],["Financial Balance",(inc-exp).toFixed(2)+" "+settings.currency],["Delivery Amount",delamt.toFixed(2)+" "+settings.currency],["Inventory Items",count("Inventory")]].map(x=>`<div class="metric"><small>${x[0]}</small><strong>${x[1]}</strong><span>Auto-calculated from saved entries</span></div>`).join("");
+document.getElementById("chartbar").style.width=(inc+exp?Math.min(100,inc/(inc+exp)*100):0)+"%";document.getElementById("chartlabel").textContent=`Income ${inc.toFixed(2)} · Expense ${exp.toFixed(2)} · Balance ${(inc-exp).toFixed(2)} ${settings.currency}`;
+}
+function exportData(){let blob=new Blob([JSON.stringify({records,settings},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="homeland-erp-backup.json";a.click();URL.revokeObjectURL(a.href)}
+function saveSettings(){settings={companyName:companyName.value,currency:currency.value,companyEmail:companyEmail.value};localStorage.setItem("homelandERP_settings",JSON.stringify(settings));alert("Settings saved");updateDashboard()}
+function resetAll(){if(confirm("This permanently clears records from this browser. Continue?")){records={};persist();updateDashboard();Object.keys(entities).forEach(drawRows)}}
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".page").forEach(p=>p.classList.toggle("hidden",p.id!==b.dataset.page));});
+Object.keys(entities).forEach(renderEntity);companyName.value=settings.companyName;currency.value=settings.currency;companyEmail.value=settings.companyEmail;updateDashboard();
+</script>
+</body></html>
